@@ -35,6 +35,7 @@ obj-$(CONFIG_FSL_IFC) += fsl_ifc.o
 obj-$(CONFIG_FSL_IIM) += fsl_iim.o
 obj-$(CONFIG_FSL_MC9SDZ60) += mc9sdz60.o
 obj-$(CONFIG_FSL_SEC_MON) += fsl_sec_mon.o
+obj-$(CONFIG_GDSYS_IOEP) += gdsys_ioep.o
 obj-$(CONFIG_GDSYS_RXAUI_CTRL) += gdsys_rxaui_ctrl.o
 obj-$(CONFIG_$(SPL_)I2C_EEPROM) += i2c_eeprom.o
 obj-$(CONFIG_LED_STATUS) += status_led.o
