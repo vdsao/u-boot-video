@@ -283,4 +283,13 @@ config GDSYS_IOEP
 	depends on MISC
 	help
 	  Support gdsys FPGA's IO endpoint driver.
+
+config GDSYS_SOC
+	bool "Enable gdsys SOC driver"
+	depends on MISC
+	help
+	  Support for gdsys IHS SOC, a simple bus associated with each gdsys
+	  IHS (Integrated Hardware Systems) FPGA, which holds all devices whose
+	  register maps are contained within the FPGA's register map.
+
 endmenu
