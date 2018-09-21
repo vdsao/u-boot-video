@@ -295,4 +295,12 @@ config MPC83XX_SERDES
 	help
 	  Support for serdes found on MPC83xx SoCs.
 
+config GDSYS_SOC
+	bool "Enable gdsys SOC driver"
+	depends on MISC
+	help
+	  Support for gdsys IHS SOC, a simple bus associated with each gdsys
+	  IHS (Integrated Hardware Systems) FPGA, which holds all devices whose
+	  register maps are contained within the FPGA's register map.
+
 endmenu
