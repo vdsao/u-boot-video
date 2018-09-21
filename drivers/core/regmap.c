@@ -188,22 +188,72 @@ int regmap_uninit(struct regmap *map)
 	return 0;
 }
 
+int regmap_raw_read(struct regmap *map, uint offset, void *valp, size_t val_len)
+{
+	void *ptr;
+
+	ptr = map_physmem(map->ranges[0].start + offset, val_len, MAP_NOCACHE);
+
+	switch (val_len) {
+	case REGMAP_SIZE_8:
+		*((u8 *)valp) = in_8((u8 *)ptr);
+		break;
+	case REGMAP_SIZE_16:
+		*((u16 *)valp) = in_le16((u16 *)ptr);
+		break;
+	case REGMAP_SIZE_32:
+		*((u32 *)valp) = in_le32((u32 *)ptr);
+		break;
+#if defined(in_le64) && defined(readq)
+	case REGMAP_SIZE_64:
+		*((u64 *)valp) = in_le64((u64 *)ptr);
+		break;
+#endif
+	default:
+		debug("%s: regmap size %zu unknown\n", __func__, val_len);
+		return -EINVAL;
+	}
+	return 0;
+}
+
 int regmap_read(struct regmap *map, uint offset, uint *valp)
 {
-	u32 *ptr = map_physmem(map->ranges[0].start + offset, 4, MAP_NOCACHE);
+	return regmap_raw_read(map, offset, valp, REGMAP_SIZE_32);
+}
 
-	*valp = le32_to_cpu(readl(ptr));
+int regmap_raw_write(struct regmap *map, uint offset, const void *val,
+		     size_t val_len)
+{
+	void *ptr;
+
+	ptr = map_physmem(map->ranges[0].start + offset, val_len, MAP_NOCACHE);
+
+	switch (val_len) {
+	case REGMAP_SIZE_8:
+		out_8((u8 *)ptr, *((u8 *)val));
+		break;
+	case REGMAP_SIZE_16:
+		out_le16((u16 *)ptr, *((u16 *)val));
+		break;
+	case REGMAP_SIZE_32:
+		out_le32((u32 *)ptr, *((u32 *)val));
+		break;
+#if defined(out_le64) && defined(writeq)
+	case REGMAP_SIZE_64:
+		out_le64((u64 *)ptr, *((u64 *)val));
+		break;
+#endif
+	default:
+		debug("%s: regmap size %zu unknown\n", __func__, val_len);
+		return -EINVAL;
+	}
 
 	return 0;
 }
 
 int regmap_write(struct regmap *map, uint offset, uint val)
 {
-	u32 *ptr = map_physmem(map->ranges[0].start + offset, 4, MAP_NOCACHE);
-
-	writel(cpu_to_le32(val), ptr);
-
-	return 0;
+	return regmap_raw_write(map, offset, &val, REGMAP_SIZE_32);
 }
 
 int regmap_update_bits(struct regmap *map, uint offset, uint mask, uint val)
