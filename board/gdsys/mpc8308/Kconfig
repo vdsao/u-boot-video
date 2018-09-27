@@ -1,9 +1,3 @@
-config GDSYS_LEGACY_OSD_CMDS
-	bool
-	help
-	  Use the 'osdw', 'osdp', and 'osdsize' legacy commands required by
-	  gdsys devices.
-
 if TARGET_HRCON
 
 config SYS_BOARD
@@ -14,9 +8,6 @@ config SYS_VENDOR
 
 config SYS_CONFIG_NAME
 	default "hrcon"
-
-config GDSYS_LEGACY_OSD_CMDS
-	default y
 
 endif
 
@@ -31,8 +22,6 @@ config SYS_VENDOR
 config SYS_CONFIG_NAME
 	default "strider"
 
-config GDSYS_LEGACY_OSD_CMDS
-	default y
 endif
 
 config CMD_IOLOOP
