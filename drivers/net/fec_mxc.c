@@ -1254,7 +1254,7 @@ static void fec_gpio_reset(struct fec_priv *priv)
 	debug("fec_gpio_reset: fec_gpio_reset(dev)\n");
 	if (dm_gpio_is_valid(&priv->phy_reset_gpio)) {
 		dm_gpio_set_value(&priv->phy_reset_gpio, 1);
-		udelay(priv->reset_delay);
+		mdelay(priv->reset_delay);
 		dm_gpio_set_value(&priv->phy_reset_gpio, 0);
 	}
 }
@@ -1352,22 +1352,18 @@ static int fecmxc_ofdata_to_platdata(struct udevice *dev)
 
 #ifdef CONFIG_DM_GPIO
 	ret = gpio_request_by_name(dev, "phy-reset-gpios", 0,
-			     &priv->phy_reset_gpio, GPIOD_IS_OUT);
-	if (ret == 0) {
-		ret = dev_read_u32_array(dev, "phy-reset-duration",
-					 &priv->reset_delay, 1);
-	} else if (ret == -ENOENT) {
-		priv->reset_delay = 1000;
-		ret = 0;
-	}
+				   &priv->phy_reset_gpio, GPIOD_IS_OUT);
+	if (ret < 0)
+		return 0; /* property is optional, don't return error! */
 
+	priv->reset_delay = dev_read_u32_default(dev, "phy-reset-duration", 1);
 	if (priv->reset_delay > 1000) {
-		printf("FEX MXC: gpio reset timeout should be less the 1000\n");
-		priv->reset_delay = 1000;
+		/* property value wrong, use default value */
+		priv->reset_delay = 1;
 	}
 #endif
 
-	return ret;
+	return 0;
 }
 
 static const struct udevice_id fecmxc_ids[] = {
