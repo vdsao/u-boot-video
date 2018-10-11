@@ -1293,6 +1293,9 @@ static void fec_gpio_reset(struct fec_priv *priv)
 		dm_gpio_set_value(&priv->phy_reset_gpio, 1);
 		mdelay(priv->reset_delay);
 		dm_gpio_set_value(&priv->phy_reset_gpio, 0);
+#if CONFIG_IS_ENABLED(TARGET_IMX8QXP_MEK)
+		mdelay(150);
+#endif
 	}
 }
 #endif
