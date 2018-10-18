@@ -106,7 +106,7 @@ u32 __weak get_lpuart_clk(void)
 }
 
 #if IS_ENABLED(CONFIG_CLK)
-ulong get_lpuart_clk_rate(struct udevice *dev)
+static int get_lpuart_clk_rate(struct udevice *dev, u32 *clk)
 {
 	struct clk per_clk;
 	ulong rate;
@@ -123,9 +123,12 @@ ulong get_lpuart_clk_rate(struct udevice *dev)
 		dev_err(dev, "Failed to get per clk rate: %ld\n", (long)rate);
 		return ret;
 	}
-
-	return  rate;
+	*clk = rate;
+	return 0;
 }
+#else
+static inline int get_lpuart_clk_rate(struct udevice *dev, u32 *clk)
+{ return -ENOSYS; }
 #endif
 
 static bool is_lpuart32(struct udevice *dev)
@@ -142,11 +145,15 @@ static void _lpuart_serial_setbrg(struct udevice *dev,
 	struct lpuart_fsl *base = plat->reg;
 	u32 clk;
 	u16 sbr;
+	int ret;
 
-	if (IS_ENABLED(CONFIG_CLK))
-		clk = get_lpuart_clk_rate(dev);
-	else
+	if (IS_ENABLED(CONFIG_CLK)) {
+		ret = get_lpuart_clk_rate(dev, &clk);
+		if (ret)
+			return;
+	} else {
 		clk = get_lpuart_clk();
+	}
 
 	sbr = (u16)(clk / (16 * baudrate));
 
@@ -227,11 +234,15 @@ static void _lpuart32_serial_setbrg_7ulp(struct udevice *dev,
 	struct lpuart_fsl_reg32 *base = plat->reg;
 	u32 sbr, osr, baud_diff, tmp_osr, tmp_sbr, tmp_diff, tmp;
 	u32 clk;
+	int ret;
 
-	if (IS_ENABLED(CONFIG_CLK))
-		clk = get_lpuart_clk_rate(dev);
-	else
+	if (IS_ENABLED(CONFIG_CLK)) {
+		ret = get_lpuart_clk_rate(dev, &clk);
+		if (ret)
+			return;
+	} else {
 		clk = get_lpuart_clk();
+	}
 
 	baud_diff = baudrate;
 	osr = 0;
@@ -292,11 +303,15 @@ static void _lpuart32_serial_setbrg(struct udevice *dev,
 	struct lpuart_fsl_reg32 *base = plat->reg;
 	u32 clk;
 	u32 sbr;
+	int ret;
 
-	if (IS_ENABLED(CONFIG_CLK))
-		clk = get_lpuart_clk_rate(dev);
-	else
+	if (IS_ENABLED(CONFIG_CLK)) {
+		ret = get_lpuart_clk_rate(dev, &clk);
+		if (ret)
+			return;
+	} else {
 		clk = get_lpuart_clk();
+	}
 
 	sbr = (clk / (16 * baudrate));
 
