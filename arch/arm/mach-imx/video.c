@@ -54,8 +54,10 @@ int board_video_skip(void)
 			       displays[i].mode.xres,
 			       displays[i].mode.yres);
 
+#ifdef CONFIG_IMX_HDMI
 			if (!strcmp(displays[i].mode.name, "HDMI"))
 				imx_enable_hdmi_phy();
+#endif
 		} else
 			printf("LCD %s cannot be configured: %d\n",
 			       displays[i].mode.name, ret);
