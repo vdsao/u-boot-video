@@ -778,7 +778,7 @@ static int do_fdtgrep(struct display_info *disp, const char *filename)
 {
 	struct fdt_region *region = NULL;
 	int max_regions;
-	int count = 100;
+	int count = 110;
 	char path[1024];
 	char *blob;
 	int i, ret;
