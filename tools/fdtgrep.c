@@ -824,7 +824,7 @@ static int do_fdtgrep(struct display_info *disp, const char *filename)
 		if (count <= max_regions)
 			break;
 		free(region);
-		fprintf(stderr, "Internal error with fdtgrep_find_region)(\n");
+		fprintf(stderr, "Internal error with fdtgrep_find_regions()\n");
 		return -1;
 	}
 
