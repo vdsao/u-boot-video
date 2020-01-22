@@ -56,7 +56,7 @@ config VIDEO_BPP16
 config VIDEO_BPP32
 	bool "Support 32-bit-per-pixel displays"
 	depends on DM_VIDEO
-	default y if X86
+	default y if ARCH_SUNXI || X86
 	help
 	  Support drawing text and bitmaps onto a 32-bit-per-pixel display.
 	  Enabling this will include code to support this display. Without
