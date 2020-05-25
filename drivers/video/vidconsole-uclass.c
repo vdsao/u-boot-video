@@ -645,6 +645,7 @@ int vidconsole_memmove(struct udevice *dev, void *dst, const void *src,
 }
 #endif
 
+#if CONFIG_IS_ENABLED(CMD_VIDCONSOLE)
 void vidconsole_position_cursor(struct udevice *dev, unsigned col, unsigned row)
 {
 	struct vidconsole_priv *priv = dev_get_uclass_priv(dev);
@@ -705,3 +706,4 @@ U_BOOT_CMD(
 	"print string on video framebuffer",
 	"    <string>"
 );
+#endif /* CONFIG_IS_ENABLED(CMD_VIDCONSOLE) */
