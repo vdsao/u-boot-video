@@ -1601,31 +1601,49 @@ static const struct dm_mmc_ops fsl_esdhc_ops = {
 };
 #endif
 
+#if defined(CONFIG_ARCH_MX7)
 static struct esdhc_soc_data usdhc_imx7d_data = {
 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
 			| ESDHC_FLAG_HS400,
 };
+#endif
 
+#if defined(CONFIG_ARCH_IMX8) || defined(CONFIG_ARCH_IMX8M)
 static struct esdhc_soc_data usdhc_imx8qm_data = {
 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING |
 		ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200 |
 		ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES,
 };
+#endif
 
 static const struct udevice_id fsl_esdhc_ids[] = {
+#ifdef CONFIG_ARCH_MX5
 	{ .compatible = "fsl,imx53-esdhc", },
+#endif
+#ifdef CONFIG_ARCH_MX6
 	{ .compatible = "fsl,imx6ul-usdhc", },
 	{ .compatible = "fsl,imx6sx-usdhc", },
 	{ .compatible = "fsl,imx6sl-usdhc", },
 	{ .compatible = "fsl,imx6q-usdhc", },
+#endif
+#ifdef CONFIG_ARCH_MX7
 	{ .compatible = "fsl,imx7d-usdhc", .data = (ulong)&usdhc_imx7d_data,},
+#endif
+#ifdef CONFIG_ARCH_MX7ULP
 	{ .compatible = "fsl,imx7ulp-usdhc", },
+#endif
+#ifdef CONFIG_ARCH_IMX8
 	{ .compatible = "fsl,imx8qm-usdhc", .data = (ulong)&usdhc_imx8qm_data,},
+#endif
+#ifdef CONFIG_ARCH_IMX8M
 	{ .compatible = "fsl,imx8mm-usdhc", .data = (ulong)&usdhc_imx8qm_data,},
 	{ .compatible = "fsl,imx8mn-usdhc", .data = (ulong)&usdhc_imx8qm_data,},
 	{ .compatible = "fsl,imx8mq-usdhc", .data = (ulong)&usdhc_imx8qm_data,},
+#endif
+#ifdef CONFIG_ARCH_IMXRT
 	{ .compatible = "fsl,imxrt-usdhc", },
+#endif
 	{ .compatible = "fsl,esdhc", },
 	{ /* sentinel */ }
 };

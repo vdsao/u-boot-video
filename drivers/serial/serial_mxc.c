@@ -343,11 +343,21 @@ static int mxc_serial_ofdata_to_platdata(struct udevice *dev)
 
 static const struct udevice_id mxc_serial_ids[] = {
 	{ .compatible = "fsl,imx21-uart" },
+#ifdef CONFIG_ARCH_MX5
 	{ .compatible = "fsl,imx53-uart" },
+#endif
+#ifdef CONFIG_ARCH_MX6SX
 	{ .compatible = "fsl,imx6sx-uart" },
+#endif
+#if defined(CONFIG_ARCH_MX6UL) || defined(CONFIG_ARCH_MX6ULL)
 	{ .compatible = "fsl,imx6ul-uart" },
+#endif
+#ifdef CONFIG_ARCH_MX7
 	{ .compatible = "fsl,imx7d-uart" },
+#endif
+#if defined(CONFIG_ARCH_MX6) || defined(CONFIG_ARCH_MX6SL) || defined(CONFIG_ARCH_MX6SLL)
 	{ .compatible = "fsl,imx6q-uart" },
+#endif
 	{ }
 };
 #endif

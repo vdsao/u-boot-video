@@ -1574,14 +1574,30 @@ static int fecmxc_ofdata_to_platdata(struct udevice *dev)
 }
 
 static const struct udevice_id fecmxc_ids[] = {
+#ifdef CONFIG_ARCH_MX28
 	{ .compatible = "fsl,imx28-fec" },
+#endif
+#ifdef CONFIG_ARCH_MX6
 	{ .compatible = "fsl,imx6q-fec" },
+#endif
+#ifdef CONFIG_MX6SL
 	{ .compatible = "fsl,imx6sl-fec" },
+#endif
+#ifdef CONFIG_MX6SX
 	{ .compatible = "fsl,imx6sx-fec" },
+#endif
+#ifdef CONFIG_MX6UL
 	{ .compatible = "fsl,imx6ul-fec" },
+#endif
+#ifdef CONFIG_ARCH_MX5
 	{ .compatible = "fsl,imx53-fec" },
+#endif
+#ifdef CONFIG_ARCH_MX7
 	{ .compatible = "fsl,imx7d-fec" },
+#endif
+#ifdef CONFIG_ARCH_VF610
 	{ .compatible = "fsl,mvf600-fec" },
+#endif
 	{ }
 };
 
