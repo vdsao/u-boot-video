@@ -55,7 +55,7 @@ build all 32bit ARM platforms:
   stage: world build
   script:
     - ret=0;
-      ./tools/buildman/buildman -o /tmp -P -E -W mx6 || ret=$?;
+      ./tools/buildman/buildman -o /tmp -P -E -W arm -x aarch64 || ret=$?;
       if [[ $ret -ne 0 ]]; then
         ./tools/buildman/buildman -o /tmp -seP;
         exit $ret;
